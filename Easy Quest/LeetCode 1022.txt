@@ -1,0 +1,60 @@
+LeetCode 1022 (Easy)
+
+Q:- You are given the root of a binary tree where each node has a value 0 or 1. Each root-to-leaf path represents a binary number starting with the most significant bit.
+
+For example, if the path is 0 -> 1 -> 1 -> 0 -> 1, then this could represent 01101 in binary, which is 13.
+For all leaves in the tree, consider the numbers represented by the path from the root to that leaf. Return the sum of these numbers.
+
+The test cases are generated so that the answer fits in a 32-bits integer.
+
+Example:- 
+Input: root = [1,0,1,0,1,0,1]
+Output: 22
+Explanation: (100) + (101) + (110) + (111) = 4 + 5 + 6 + 7 = 22
+
+              1
+           /    \
+          0      1
+         / \    / \
+        0   1  0   1
+
+Solution: 
+class Solution {
+    public int sumRootToLeaf(TreeNode root) {
+         return Sum(root,0);
+    }
+    public int Sum(TreeNode root,int sum){
+           if(root==null)
+            return 0;
+        
+        sum = (sum<<1)+root.val;
+        
+        if(root.left==null && root.right==null)
+            return sum;
+        
+        return Sum(root.left,sum)+Sum(root.right,sum);
+
+    }
+}
+
+Gist: We have to approach the tree as DFS and then store CurrNum on each Node with help of recursion.
+
+  MainSum     root      currNumber/sum
+    0           1          1
+    0           0          2 (done)
+    4           0          4 (done)
+    9           1          5
+    9           1          3 (done)
+    15          0          6 (done)
+    22          1          7 
+
+
+currNum = 0 << 1 + root.val(1)
+currNum = 1 
+currNum = 1 << 1 + root.val(0)
+currNum = 2
+currNum = 2 << 1 + root.val(0)
+currNum = 4
+
+MainRes = MainRes + 4
+
